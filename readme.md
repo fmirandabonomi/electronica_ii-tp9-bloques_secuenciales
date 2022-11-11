@@ -1,6 +1,6 @@
-# Práctico 9 - Electrónica II 2022 para ingeniería electrónica - Circuitos secuenciales
+# Práctico 9 - Electrónica II 2022 para ingeniería electrónica - Bloques secuenciales
 
-El objetivo de este práctico es familiarizarse con los circuitos lógicos combinacionales sincrónicos y su implementación en VHDL. Deberás implementar los siguientes circuitos:
+El objetivo de este práctico es familiarizarse con los circuitos lógicos secuenciales sincrónicos y su implementación en VHDL. Deberás implementar los siguientes circuitos:
 
 - Flip-flop D.
 - Contador Jhonson.
@@ -155,7 +155,6 @@ Para correr las pruebas correspondientes al timer usar `mingw32-make contador` (
 
 Es un registro de desplazamiento a la derecha sincrónico de ancho configurable con entrada serie y salida paralela. Cuenta con entradas de reset asincrónica y habilitación de reloj. Cuando la habilitación es '1', con cada flanco ascendente de reloj el bit 0 del registro toma el valor que tenía el bit 1, en general el bit *k* toma el valor que tenía el bit *k+1* y el bit más significativo toma el valor presente en la entrada serie. 
 
-Nota: Usar como elemento de memoria el FFD definido en el primer apartado, instanciado como componente. No se admite ninguna otra memoria, únicamente se admiten procesos que generen lógica combinacional.
 
 ```
    ┌──────────────────────────┐
