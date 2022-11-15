@@ -73,9 +73,6 @@ El contador johnson es un tipo de contador de anillo (porque consiste en una cad
    ┌──────────────────────────┐
 ───┤rst                       │
    │                        Co├───
-═══╡D(N-1 .. 0)               │
-   │                          │
-───┤carga                     │
    │                          │
 ───┤hab                       │
    │               Q(N-1 .. 0)╞═══
