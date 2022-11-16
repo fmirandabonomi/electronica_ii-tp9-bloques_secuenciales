@@ -516,19 +516,22 @@ begin
         constant regla3 : string := "Tiempo debe ser igual al numero de flancos ascendentes con hab='1' que la entrada de pulso permanezca baja.";
         constant regla4 : string := "La entrada de pulso es sincroninca.";
         constant regla5 : string := "La salida med vuelve a cero al iniciar una nueva medicion.";
+        constant regla6 : string := "Si el tiempo excede la cuenta máxima el tiempo será 0 indicando sobrecarga";
     begin
-        rst <= '1';
+        rst <= '1'; -- reset
         pulso <= '1';
         hab <= '1';
         clk <= '0';
-        wait for T;
+        wait for T; 
         esperado := (med=>'0',tiempo=>(others=>'0'));
         if salida /= esperado then
             report gen_msg(regla1,esperado,salida)
                 severity error;
             pass := false;
         end if;
-        if pass then
+        -- fin reset
+
+        if pass then  -- espacio longitud 1 (dos veces)
             rst   <= '0';
             hab   <= '1';
             pulso <= '1';
@@ -567,12 +570,40 @@ begin
             clk <= '0';
             rst <= '1';
             wait for T;
-            rst <= '0';
+            rst <= '0'; -- reset
             wait for T;
             esperado := (med=>'0',tiempo=>(others=>'0'));
-        end if;
-        if pass then
+            if salida /= esperado then
+                report gen_msg(regla1,esperado,salida)
+                    severity error;
+                pass := false;
+            end if;
+        end if; -- Espacio longitud 1 (dos veces)
+
+        if pass then -- Espacio no tomado
+            clk <= '0';
+            pulso <= '1';
+            wait for T;
+            clk <= '1';
+            wait for T;
             pulso <= '0';
+            clk <= '0';
+            wait for T;
+            pulso <= '1';
+            wait for T;
+            clk <= '1';
+            wait for T;
+            esperado := (med=>'0',tiempo=>(others=>'0'));
+            if salida /= esperado then
+                report gen_msg(regla1,esperado,salida)
+                    severity error;
+                pass := false;
+            end if;
+        end if; -- espacio no tomado
+
+        if pass then -- Espacio largo con la mitad de los ciclos deshabilitados
+            pulso <= '0';
+            clk <= '0';
             wait for T;
             for i in 1 to 2**(N-1) loop 
                 clk <= '1';
@@ -629,8 +660,8 @@ begin
                 clk <= '0';
                 wait for T;
             end if;
-        end if;
-        if pass then
+        end if; -- Espacio largo con la mitad de los ciclos deshabilitados
+        if pass then -- Rebalse da lectura 0
             pulso <= '0';
             wait for T;
             if salida /= esperado then
@@ -646,7 +677,24 @@ begin
                     severity error;
                 pass := false;
             end if;
-        end if;
+            for i in 1 to 4+2**N loop
+                clk <= '0';
+                wait for T;
+                clk <= '1';
+                wait for T;
+            end loop;
+            clk <= '0';
+            pulso <= '1';
+            wait for T;
+            clk <= '1';
+            wait for T;
+            esperado := (med=>'1',tiempo=>std_logic_vector(to_unsigned(0,N)));
+            if salida /= esperado then
+                report gen_msg(regla6,esperado,salida)
+                    severity error;
+                pass := false;
+            end if;
+        end if; -- Rebalse da lectura 0
         if pass then
             report "det_tiempo [PASS]"
                 severity note;
