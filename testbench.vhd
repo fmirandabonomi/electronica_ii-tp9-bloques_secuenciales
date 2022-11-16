@@ -548,6 +548,22 @@ begin
                     severity error;
                 pass := false;
             end if;
+            pulso <= '0';
+            clk <= '0';
+            wait for T;
+            clk   <= '1';
+            wait for T;
+            pulso <= '1';
+            clk <= '0';
+            wait for T;
+            clk <= '1';
+            wait for T;
+            esperado := (med =>'1', tiempo => (0=>'1',others=>'0'));
+            if salida /= esperado then
+                report gen_msg(regla1,esperado,salida)
+                    severity error;
+                pass := false;
+            end if;
             clk <= '0';
             rst <= '1';
             wait for T;
