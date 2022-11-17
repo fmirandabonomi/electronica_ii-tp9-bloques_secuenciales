@@ -516,7 +516,7 @@ begin
         constant regla3 : string := "Tiempo debe ser igual al numero de flancos ascendentes con hab='1' que la entrada de pulso permanezca baja.";
         constant regla4 : string := "La entrada de pulso es sincroninca.";
         constant regla5 : string := "La salida med vuelve a cero al iniciar una nueva medicion.";
-        constant regla6 : string := "Si el tiempo excede la cuenta maxima el valor de \"tiempo\" debe ser 0, indicando sobrecarga";
+        constant regla6 : string := "Si el tiempo excede la cuenta maxima el valor de tiempo debe ser 0, indicando sobrecarga";
     begin
         rst <= '1'; -- reset
         pulso <= '1';
