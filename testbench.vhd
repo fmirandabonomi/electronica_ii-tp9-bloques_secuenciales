@@ -547,7 +547,7 @@ begin
             wait for T;
             esperado := (med =>'1', tiempo => (0=>'1',others=>'0'));
             if salida /= esperado then
-                report gen_msg(regla1,esperado,salida)
+                report gen_msg(regla3,esperado,salida)
                     severity error;
                 pass := false;
             end if;
@@ -563,7 +563,7 @@ begin
             wait for T;
             esperado := (med =>'1', tiempo => (0=>'1',others=>'0'));
             if salida /= esperado then
-                report gen_msg(regla1,esperado,salida)
+                report gen_msg(regla3,esperado,salida)
                     severity error;
                 pass := false;
             end if;
