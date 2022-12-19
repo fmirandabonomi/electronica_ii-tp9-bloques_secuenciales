@@ -6,6 +6,17 @@ endif
 
 all : ffd johnson contador sipo det_flanco det_tiempo
 entrega : all entrega-tp9.tar.gz
+corregir : descomprimir all
+	ghdl synth --std=08 -gN=4 ffd 
+	ghdl synth --std=08 -gN=4 johnson
+	ghdl synth --std=08 -gN=4 contador
+	ghdl synth --std=08 -gN=4 sipo
+	ghdl synth --std=08 det_flanco 
+	ghdl synth --std=08 -gN=4 det_tiempo
+
+descomprimir :
+	tar -zxf entrega-tp9.tar.gz
+
 ffd : work-obj08.cf
 	ghdl -m --std=08 ffd_tb
 	ghdl -r --std=08 ffd_tb
