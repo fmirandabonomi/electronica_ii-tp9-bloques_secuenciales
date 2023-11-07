@@ -9,8 +9,7 @@ El objetivo de este práctico es familiarizarse con los circuitos lógicos secue
 - Medidor de distancia entre pulsos.
 - Registro de desplazamiento.
 
-**Importante: El único elemento de memoria permitido es el FFD, que deberá ser resuelto en primer lugar**. En el archivo `ffd.vhd` se define además el paquete `work.ffd` que incluye el componente ffd, y este paquete es usado en todos los otros puntos, así que no es necesario
-definir el componente ffd sino solamente usarlo (`u1 : ffd generic map(ancho=>...) port map (rst=>...,hab=>...,D=>...,clk=>...,Q=>...);`)
+**Importante: El elemento de memoria en cada caso debe ser definido en un proceso separado, la única lógica extra a incluir en dicho proceso es el reset asincrónico si corresponde**.
 
 ## Visualisación de formas de onda
 
@@ -21,10 +20,10 @@ pacman -Syu
 ```
 Luego instala gtkwave con el comando
 ```
-pacman -S mingw-w64-i686-gtkwave
+pacman -S mingw-w64-ucrt-x86_64-gtkwave
 ```
 
-Podrás ver la simulación aún cuando el banco de prueba detecte errores, pero en ese caso podrá terminar en forma prematura. Para ver las ondas del banco de pruebas del flip-flop D por ejemplo usa `mingw32-make wav-ffd`.
+Podrás ver la simulación aún cuando el banco de prueba detecte errores, pero en ese caso podrá terminar en forma prematura. Para ver las ondas del banco de pruebas del flip-flop D por ejemplo usa `make wav-ffd`.
 
 ## Flip-flop tipo D (ffd.vhd).
 
@@ -47,7 +46,7 @@ Debes implementar un flip-flop tipo D (FFD) de ancho variable (N) activado por f
 ║ Q    ┤ UUUU │    0000      │1010 │      1011       │1101 │1110 │1111 │0000  ║
 ║      └──────┴──────────────┴─────┴─────────────────┴─────┴─────┴─────┴────  ║
 ║         ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ║
-║ Clk  ┐  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │    ║
+║ Clk  ┐  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │    ║
 ║      └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──  ║
 ║      ┌───────────────────────┬─────┬─────┬─────┬─────┬─────┬─────┬────────  ║
 ║ D    ┤      1010             │1011 │0101 │1100 │1101 │1110 │1111 │  0000    ║
@@ -63,7 +62,7 @@ Debes implementar un flip-flop tipo D (FFD) de ancho variable (N) activado por f
 
 Nota: El ancho del FFD es *un parámetro* y puede tomar cualquier valor, no necesariamente el valor dado en el ejemplo.
  
-Para correr las pruebas correspondientes al FFD usar `mingw32-make ffd` (windows) o `make ffd` (linux). Para ver las ondas de la simulación `mingw32-make wav-ffd`.
+Para correr las pruebas correspondientes al FFD usar `make ffd` (windows) o `make ffd` (linux). Para ver las ondas de la simulación `make wav-ffd`.
 
 ## Contador Johnson (johnson.vhd)
 
@@ -88,7 +87,7 @@ El contador johnson es un tipo de contador de anillo (porque consiste en una cad
 ║ Q       ┤ UUUU │        0000  │0001 │0011 │0111 │1111 │1110 │1100 │1000 │0000  ║
 ║         └──────┴──────────────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴───── ║
 ║            ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ║
-║ clk     ┐  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │    ║
+║ clk     ┐  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │    ║
 ║         └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──  ║
 ║                             ┌────────────────────────────────────────────────  ║
 ║ hab     ┐                   │                                                  ║
@@ -99,7 +98,7 @@ El contador johnson es un tipo de contador de anillo (porque consiste en una cad
 ╚════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-Para correr las pruebas correspondientes al FFD usar `mingw32-make johnson` (windows) o `make johnson` (linux). Para ver las ondas de la simulación `mingw32-make wav-johnson`.
+Para correr las pruebas correspondientes al FFD usar `make johnson` (windows) o `make johnson` (linux). Para ver las ondas de la simulación `make wav-johnson`.
 
 
 ## Contador (contador.vhd)
@@ -129,7 +128,7 @@ Es un contador sincrónico ascendente con tamaño de palabra (N) configurable. S
 ║ Q       ┤ UUUU │        0000        │0001 │0010 │0011 │1101 │1110 │1111 │0000  ║
 ║         └──────┴────────────────────┴─────┴─────┴─────┴─────┴─────┴─────┴───── ║
 ║            ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ║
-║ clk     ┐  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │    ║
+║ clk     ┐  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │    ║
 ║         └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──  ║
 ║                                ┌─────────────────────────────────────────────  ║
 ║ hab     ┐                      │                                               ║
@@ -146,7 +145,7 @@ Es un contador sincrónico ascendente con tamaño de palabra (N) configurable. S
 ╚════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-Para correr las pruebas correspondientes al timer usar `mingw32-make contador` (windows) o `make contador` (linux). Para ver las ondas de la simulación `mingw32-make wav-contador`.
+Para correr las pruebas correspondientes al timer usar `make contador` (windows) o `make contador` (linux). Para ver las ondas de la simulación `make wav-contador`.
 
 ## Registro de desplazamiento de entrada serie y salida paralela (sipo.vhd).
 
@@ -170,7 +169,7 @@ Es un registro de desplazamiento a la derecha sincrónico de ancho configurable 
 ║ Q       ┤ UUUU │0000    │1000 │0100 │0010 │               1001                 ║
 ║         └──────┴────────┴─────┴─────┴─────┴──────────────────────────────────  ║
 ║            ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ║
-║ Clk     ┐  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │    ║
+║ Clk     ┐  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │    ║
 ║         └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──  ║
 ║                    ┌────┐            ┌────┐                                    ║
 ║ entrada ┐          │    │            │    │                                    ║
@@ -184,7 +183,7 @@ Es un registro de desplazamiento a la derecha sincrónico de ancho configurable 
 ╚════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-Para correr las pruebas correspondientes al timer usar `mingw32-make sipo` (windows) o `make sipo` (linux). Para ver las ondas de la simulación `mingw32-make wav-sipo`.
+Para correr las pruebas correspondientes al timer usar `make sipo` (windows) o `make sipo` (linux). Para ver las ondas de la simulación `make wav-sipo`.
 
 ## Detector sincrónico de flanco ascendente (det_flanco.vhd).
 
@@ -211,7 +210,7 @@ La detección de flanco sincrónica depende solo del estado del detector y por l
 ║ flanco        ┤  U   │                          │     │                 │     │      ║
 ║               └──────┴──────────────────────────┘     └─────────────────┘     └────  ║
 ║                  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ║
-║ clk           ┐  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │    ║
+║ clk           ┐  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │    ║
 ║               └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──  ║
 ║                                      ┌─────────────────────────────────────────────  ║
 ║ hab           ┐                      │                                               ║
@@ -225,7 +224,7 @@ La detección de flanco sincrónica depende solo del estado del detector y por l
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-Para correr las pruebas correspondientes al timer usar `mingw32-make det_flanco` (windows) o `make det_flanco` (linux). Para ver las ondas de la simulación `mingw32-make wav-det_flanco`.
+Para correr las pruebas correspondientes al timer usar `make det_flanco` (windows) o `make det_flanco` (linux). Para ver las ondas de la simulación `make wav-det_flanco`.
 
 
 ## Detector de tiempo entre pulsos (det_tiempo.vhd).
@@ -248,13 +247,13 @@ Mientras rst='1' la cuenta interna se mantiene en 0 al igual que las salida tiem
 
 ╔══════════════════ Diagrama de tiempo. Ejemplo para ancho = 4. ═════════════════╗
 ║         ┌──────┬────────────────────────────────┬───────────────────────┬────  ║
-║ tiempo  ┤ UUUU │              0000              │         0100          │0010  ║
+║ tiempo  ┤ UUUU │              0000              │         0100          │0011  ║
 ║         └──────┴────────────────────────────────┴───────────────────────┴────  ║
 ║         ┌──────┐                                ┌─────┐                 ┌────  ║
 ║ med     ┤  U   │                                │     │                 │      ║
 ║         └──────┴────────────────────────────────┘     └─────────────────┘      ║
 ║            ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐    ║
-║ clk     ┐  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │  │    ║
+║ clk     ┐  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │  ↑  │    ║
 ║         └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──┘  └──  ║
 ║              ┌──────────┐                 ┌────────┐              ┌────────┐   ║
 ║ pulso   ┐    │          │                 │        │              │        │   ║
@@ -268,10 +267,10 @@ Mientras rst='1' la cuenta interna se mantiene en 0 al igual que las salida tiem
 ╚════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-Para correr las pruebas correspondientes al timer usar `mingw32-make det_tiempo` (windows) o `make det_tiempo` (linux). Para ver las ondas de la simulación `mingw32-make wav-det_tiempo`.
+Para correr las pruebas correspondientes al timer usar `make det_tiempo` (windows) o `make det_tiempo` (linux). Para ver las ondas de la simulación `make wav-det_tiempo`.
 
 
 ## Entrega
 
-Una vez los bloques pasen las pruebas y no existan elementos de memoria implícitos en procesos (excepto en los FFD) ejecutar el comando `mingw32-make entrega` (windows) o `make entrega` (linux). Si tiene éxito se generará el archivo para entregar `entrega-tp9.tar.gz` que deberás subir en la correspondiente tarea del aula virtual.
+Una vez los bloques pasen las pruebas y no existan elementos de memoria implícitos en procesos (excepto en los FFD) ejecutar el comando `make entrega` (windows) o `make entrega` (linux). Si tiene éxito se generará el archivo para entregar `entrega-tp9.tar.gz` que deberás subir en la correspondiente tarea del aula virtual.
 
